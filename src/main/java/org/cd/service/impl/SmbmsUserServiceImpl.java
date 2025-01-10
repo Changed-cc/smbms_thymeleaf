@@ -1,5 +1,7 @@
 package org.cd.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.cd.dao.SmbmsUserDao;
 import org.cd.entity.SmbmsUser;
 import org.cd.service.SmbmsUserService;
@@ -27,10 +29,14 @@ public class SmbmsUserServiceImpl implements SmbmsUserService {
     }
     //查询所有用户
     @Override
-    public List<SmbmsUser> showList() {
-        List<SmbmsUser> list = smbmsUserDao.showUserList();
-        if(list.size()>0){
-            return list;
+    public PageInfo<SmbmsUser> showList(String name,int pageNum) {
+        //设置当前页，页面容量
+        PageHelper.startPage(pageNum,5);
+        List<SmbmsUser> list = smbmsUserDao.showUserList(name);
+        //将数据放在PageInfo
+        PageInfo<SmbmsUser> pageInfo = new PageInfo<>(list);
+        if(pageInfo.getList().size()>0){
+            return pageInfo;
         }else{
             return null;
         }

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cd.dao.SmbmsProviderDao">
+    <resultMap id="provider" type="org.cd.entity.SmbmsProvider">
+        <result property="proCode" column="proCode"></result>
+        <result property="proName" column="proName"></result>
+        <result property="proContact" column="proContact"></result>
+        <result property="proPhone" column="proPhone"></result>
+        <result property="proFax" column="proFax"></result>
+        <result property="creationDate" column="creationDate"></result>
+    </resultMap>
+    <select id="showProviderList" resultMap="provider">
+        select * from smbms_provider
+        <where>
+            <if test="name !=null">
+                proName like concat("%",#{name},'%')
+            </if>
+        </where>
+    </select>
+</mapper>

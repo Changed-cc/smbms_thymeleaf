@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head lang="en">
+<html>
+<head lang="en" xmlns:th="http://www.thymeleaf.org">
     <meta charset="UTF-8">
     <title>超市账单管理系统</title>
     <link rel="stylesheet" href="/css/public.css"/>
@@ -19,7 +19,7 @@
     </header>
 <!--时间-->
     <section class="publicTime">
-        <span id="time">2025年1月1日 11:11  星期一</span>
+        <span id="time">2015年1月1日 11:11  星期一</span>
         <a href="#">温馨提示：为了能正常浏览，请使用高版本浏览器！（IE10+）</a>
     </section>
 <!--主体内容-->
@@ -28,9 +28,9 @@
             <h2 class="leftH2"><span class="span1"></span>功能列表 <span></span></h2>
             <nav>
                 <ul class="list">
-                    <li><a href="/bill/billList">账单管理</a></li>
+                    <li id="active"><a href="/bill/billList">账单管理</a></li>
                     <li><a href="/provider/showProviderList">供应商管理</a></li>
-                    <li  id="active"><a href="/user/showList">用户管理</a></li>
+                    <li><a href="/user/showList">用户管理</a></li>
                     <li><a href="password.html">密码修改</a></li>
                     <li><a href="/user/login">退出系统</a></li>
                 </ul>
@@ -39,41 +39,51 @@
         <div class="right">
             <div class="location">
                 <strong>你现在所在的位置是:</strong>
-                <span>用户管理页面</span>
+                <span>账单管理页面</span>
             </div>
             <div class="search">
-                <form action="/user/showList">
-                    <span>用户名：</span>
-                    <input type="text" name='uname' th:value="${uname}" placeholder="请输入用户名"/>
-                    <input type="submit" value="查询" style="width: 7%"/>
-                    <a href="userAdd.html">添加用户</a>
-                </form>
+                <span>商品名称：</span>
+                <input type="text" placeholder="请输入商品的名称"/>
+                
+                <span>供应商：</span>
+                <select name="tigong" >
+                    <option value="">--请选择--</option>
+                    <option value="">北京市粮油总公司</option>
+                    <option value="">邯郸市五得利面粉厂</option>
+                </select>
+
+                <span>是否付款：</span>
+                <select name="fukuan">
+                    <option value="">--请选择--</option>
+                    <option value="">已付款</option>
+                    <option value="">未付款</option>
+                </select>
+
+                <input type="submit" value="查询"/>
+                <a href="billAdd.html">添加订单</a>
             </div>
-            <!--用户-->
+            <!--账单表格 样式和供应商公用-->
             <table class="providerTable" cellpadding="0" cellspacing="0">
                 <tr class="firstTr">
-                    <th width="10%">用户编码</th>
-                    <th width="20%">用户名称</th>
-                    <th width="10%">性别</th>
-                    <th width="10%">年龄</th>
-                    <th width="10%">电话</th>
-                    <th width="10%">用户类型</th>
+                    <th width="10%">账单编码</th>
+                    <th width="20%">商品名称</th>
+                    <th width="10%">供应商</th>
+                    <th width="10%">账单金额</th>
+                    <th width="10%">是否付款</th>
+                    <th width="10%">创建时间</th>
                     <th width="30%">操作</th>
                 </tr>
-                <tr th:each="u:${pageInfo.getList()}">
-                    <td th:text="${u.userCode}">编号</td>
-                    <td th:text="${u.username}">姓名</td>
+                <tr th:each="b:${pageInfo.getList()}">
+                    <td th:text="${b.billCode}">213</td>
+                    <td th:text="${b.productName}">123</td>
+                    <td>北京市粮油总公司</td>
+                    <td th:text="${b.totalPrice}">22.00</td>
+                    <td th:text="${b.isPayment}">未付款</td>
+                    <td th:text="${b.creationDate}">2015-11-12</td>
                     <td>
-                        <span th:if="${u.gender==1}">女</span>
-                        <span th:if="${u.gender==2}">男</span>
-                    </td>
-                    <td th:text="${#dates.format(u.birthday,'yyyy-MM-dd')}">生日</td>
-                    <td th:text="${u.phone}">电话</td>
-                    <td th:text="${u.roles.roleName}">用户类型</td>
-                    <td>
-                        <a href="userView.html"><img src="/images/read.png" alt="查看" title="查看"/></a>
-                        <a href="userUpdate.html"><img src="/images/xiugai.png" alt="修改" title="修改"/></a>
-                        <a href="#" class="removeUser"><img src="/images/schu.png" alt="删除" title="删除"/></a>
+                        <a href="billView.html"><img src="/images/read.png" alt="查看" title="查看"/></a>
+                        <a href="billUpdate.html"><img src="/images/xiugai.png" alt="修改" title="修改"/></a>
+                        <a href="#" class="removeBill"><img src="/images/schu.png" alt="删除" title="删除"/></a>
                     </td>
                 </tr>
             </table>
@@ -84,26 +94,26 @@
                 共<span th:text="${pageInfo.pages}"></span>页，
                 <a th:if="${pageInfo.pageNum==1}" href="javascript:void(0)">上一页</a>
                 <a th:if="${pageInfo.pageNum!=1}"
-                   th:href="@{/user/showList(pageNum=${pageInfo.pageNum}-1)}">上一页</a>
+                   th:href="@{/bill/billList(pageNum=${pageInfo.pageNum}-1)}">上一页</a>
 
                 <a th:each="i:${#numbers.sequence(1,pageInfo.pages)}">
-                    <a th:href="@{/user/showList(pageNum=${i})}"></a>
+                    <a th:href="@{/bill/billList(pageNum=${i})}"></a>
                 </a>
 
                 <a th:if="${pageInfo.pageNum}==${pageInfo.pages}" href="javascript:void(0)">下一页</a>
                 <a th:if="${pageInfo.pageNum}!=${pageInfo.pages}"
-                   th:href="@{/user/showList(pageNum=${pageInfo.pageNum}+1)}">下一页</a>
+                   th:href="@{/bill/billList(pageNum=${pageInfo.pageNum}+1)}">下一页</a>
             </div>
         </div>
     </section>
 
 <!--点击删除按钮后弹出的页面-->
 <div class="zhezhao"></div>
-<div class="remove" id="removeUse">
+<div class="remove" id="removeBi">
     <div class="removerChid">
         <h2>提示</h2>
         <div class="removeMain">
-            <p>你确定要删除该用户吗？</p>
+            <p>你确定要删除该订单吗？</p>
             <a href="#" id="yes">确定</a>
             <a href="#" id="no">取消</a>
         </div>

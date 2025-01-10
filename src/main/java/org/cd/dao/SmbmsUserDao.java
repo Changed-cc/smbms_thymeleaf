@@ -15,8 +15,8 @@ public interface SmbmsUserDao {
     public SmbmsUser getUserByName(String name);
 
     /**
-     * 查询所有用户信息
+     * 查询所有用户信息并模糊查询
      * @return
      */
-    public List<SmbmsUser> showUserList();
+    public List<SmbmsUser> showUserList(String name);
 }

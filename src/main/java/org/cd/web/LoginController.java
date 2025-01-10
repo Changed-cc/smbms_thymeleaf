@@ -1,10 +1,15 @@
 package org.cd.web;
 
+import com.github.pagehelper.PageInfo;
+import org.cd.entity.SmbmsProvider;
 import org.cd.entity.SmbmsUser;
+import org.cd.service.SmbmsProviderService;
 import org.cd.service.SmbmsUserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -28,17 +33,19 @@ public class LoginController {
             return "welcome";
         }else{
             System.out.println("00000");
-            return "login";
+            return "error";
         }
     }
     //查询全部用户界面
     @RequestMapping("/showList")
-    public String showList(Model model,HttpSession session) {
-        System.out.println("进入查询界面");
-        List<SmbmsUser> list = smbmsUserService.showList();
-        if (list.size() > 0){
-            //存储list
-            model.addAttribute("list", list);
+    public String showList(Model model, String uname, @RequestParam(defaultValue = "1") int pageNum) {
+        System.out.println("进入用户查询界面");
+        PageInfo<SmbmsUser> pageInfo = smbmsUserService.showList(uname,pageNum);
+        if (pageInfo.getList().size()>0){
+            //存储pageInfo
+            model.addAttribute("pageInfo", pageInfo);
+            model.addAttribute("uname", uname);
+            System.out.println(pageInfo.getList());
             return "userList";
         }else{
             return "error";
