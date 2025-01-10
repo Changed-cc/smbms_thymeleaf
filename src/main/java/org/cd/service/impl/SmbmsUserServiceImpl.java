@@ -32,11 +32,24 @@ public class SmbmsUserServiceImpl implements SmbmsUserService {
     public PageInfo<SmbmsUser> showList(String name,int pageNum) {
         //设置当前页，页面容量
         PageHelper.startPage(pageNum,5);
-        List<SmbmsUser> list = smbmsUserDao.showUserList(name);
+        SmbmsUser smbmsUser = new SmbmsUser();
+        smbmsUser.setUsername(name);
+        List<SmbmsUser> list = smbmsUserDao.showUserList(smbmsUser);
         //将数据放在PageInfo
         PageInfo<SmbmsUser> pageInfo = new PageInfo<>(list);
         if(pageInfo.getList().size()>0){
             return pageInfo;
+        }else{
+            return null;
+        }
+    }
+    @Override
+    public SmbmsUser viewUser(int id) {
+        SmbmsUser smbmsUser = new SmbmsUser();
+        smbmsUser.setId(id);
+        List<SmbmsUser> list = smbmsUserDao.showUserList(smbmsUser);
+        if(list.size()>0){
+            return list.get(0);
         }else{
             return null;
         }

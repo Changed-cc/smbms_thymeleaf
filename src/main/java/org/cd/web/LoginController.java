@@ -51,4 +51,16 @@ public class LoginController {
             return "error";
         }
     }
+    //查询全部用户界面
+    @RequestMapping("/viewUser")
+    public String showList(Model model, int id) {
+        System.out.println("进入用户查询界面");
+        SmbmsUser smbmsUser = smbmsUserService.viewUser(id);
+        if(smbmsUser != null){
+            model.addAttribute("smbmsUser", smbmsUser);
+            return "userView";
+        }else{
+            return "error";
+        }
+    }
 }

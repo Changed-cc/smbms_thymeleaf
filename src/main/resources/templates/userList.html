@@ -71,7 +71,7 @@
                     <td th:text="${u.phone}">电话</td>
                     <td th:text="${u.roles.roleName}">用户类型</td>
                     <td>
-                        <a href="userView.html"><img src="/images/read.png" alt="查看" title="查看"/></a>
+                        <a th:href="@{/user/viewUser(id=${u.id})}"><img src="/images/read.png" alt="查看" title="查看"/></a>
                         <a href="userUpdate.html"><img src="/images/xiugai.png" alt="修改" title="修改"/></a>
                         <a href="#" class="removeUser"><img src="/images/schu.png" alt="删除" title="删除"/></a>
                     </td>

@@ -23,4 +23,6 @@ public interface SmbmsUserService {
      * @return
      */
     public PageInfo<SmbmsUser> showList(String name, int pageNum);
+
+    public SmbmsUser viewUser(int id);
 }

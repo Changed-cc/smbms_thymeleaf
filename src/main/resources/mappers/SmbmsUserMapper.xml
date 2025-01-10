@@ -16,18 +16,22 @@ resultType:返回值类型
         <result property="gender" column="gender"></result>
         <result property="birthday" column="birthday"></result>
         <result property="phone" column="phone"></result>
+        <result property="address" column="address"></result>
         <association property="roles" javaType="org.cd.entity.SmbmsRoles">
             <id property="id" column="id"></id>
             <result property="roleName" column="roleName"></result>
         </association>
     </resultMap>
 
-    <select id="showUserList" resultMap="aa">
+    <select id="showUserList" resultMap="aa" parameterType="org.cd.entity.SmbmsUser">
         select * from smbms_user u INNER JOIN smbms_role r on u.userRole=r.id
 --         模糊查询，动态SQL
         <where>
-            <if test="name !=null">
-                userName like concat("%",#{name},'%')
+            <if test="userName !=null">
+                and u.userName like concat("%",#{userName},'%')
+            </if>
+            <if test="id !=0">
+                and u.id=#{id}
             </if>
         </where>
     </select>
