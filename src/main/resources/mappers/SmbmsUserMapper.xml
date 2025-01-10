@@ -24,5 +24,11 @@ resultType:返回值类型
 
     <select id="showUserList" resultMap="aa">
         select * from smbms_user u INNER JOIN smbms_role r on u.userRole=r.id
+--         模糊查询，动态SQL
+        <where>
+            <if test="name !=null">
+                userName like concat("%",#{name},'%')
+            </if>
+        </where>
     </select>
 </mapper>
