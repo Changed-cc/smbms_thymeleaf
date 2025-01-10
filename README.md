@@ -1,0 +1,2 @@
+2025课程设计训练
+springboot+mybatis+thymeleaf
